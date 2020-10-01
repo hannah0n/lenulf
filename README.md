@@ -1,3 +1,9 @@
+# Len's Preliminary ULF parser
+
+This is an SBCL-ported and ASDF packaged version of Len's preliminary tree-to-ULF parser.
+
+## Original README
+```
           PARSING ENGLISH INTO ULF -- PRELIMINARY VERSION
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -46,4 +52,4 @@ Brown trees). It's not always clear what should be done in proeprocessing
 parse trees or postprocessing ULFs. 
 
 It may also be quite feasible to rewrite the ULF-to-ELF rules in TT.
-
+```
