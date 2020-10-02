@@ -98,14 +98,17 @@
   (with-output-to-string (out-stream)
     ;(let ((stream (excl:run-shell-command command :output :stream
     ;                                              :wait nil)))
-    (let ((stream (sb-ext:process-output
-                    (sb-ext:run-program
+    (let* ((process (sb-ext:run-program
                       (exec-from-command command)
                       (args-from-command command)
-                      :output :stream :wait nil :directory *default-pathname-defaults*))))
+                      :output :stream :wait nil :directory *default-pathname-defaults*))
+           (stream (sb-ext:process-output process)))
       (loop for line = (read-line stream nil)
          while line
-         do (write-line line out-stream)))))
+         do (write-line line out-stream))
+      ;; Wait for process to finish before closing stream.
+      (sb-ext:process-wait process)
+      (close stream))))
 
 
 ;; Note: I'd actually use 'tree-from-string' in epik/tools/lisp/utils, but
