@@ -11,6 +11,7 @@
 ;   repair-input, tokenize-simply, detokenize, repair-parse-tree,
 ;   repair-refined-parse-tree, hide-ttt-ops, unhide-ttt-ops, & maybe more
 
+(in-package :lenulf)
 
 (defun english-to-ulf (str)
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~

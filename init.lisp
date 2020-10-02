@@ -2,6 +2,9 @@
 ;; If repair rules pre-existing from "elf-from-sentences" are added, 
 ;; ttt and ttt rule files will have to be added from there as well.
 
+(in-package :cl-user)
+
+(load "package.lisp")
 (load "english-to-ulf.lisp")
 (load "parse.lisp")
 (load "parse-tree-to-ulf.lisp")
@@ -11,6 +14,8 @@
 (load "stem.lisp")
 (load "tt.lisp")
 (load "postprocess-ulf-tree.lisp")
+
+(in-package :lenulF)
 
 (defun trace-main () 
   (trace simple-tree pos+word-to-raw-ulf aux-inflection 

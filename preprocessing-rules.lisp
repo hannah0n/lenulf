@@ -37,6 +37,8 @@
 ; But if we go bottom-up, the shallowest rules that change POS's should be
 ; applied first.
 
+(in-package :lenulf)
+
 ; SINGLE-WORD RULES
 ;``````````````````
 (defparameter *expand-something*

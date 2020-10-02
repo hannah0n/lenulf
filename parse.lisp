@@ -4,6 +4,8 @@
 ;; Jonathan Gordon, 2011-12-19
 ;; parse-all and sep-sentences added by LKS
 
+(in-package :lenulf)
+
 ;; Example:
 ;; (parse "This is a test.")
 

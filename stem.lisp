@@ -5,6 +5,8 @@
 ;; Simple program for finding stems of verbs and singulars of nouns,
 ;; not dependent on having a lexicon.
 
+(in-package :lenulf)
+
 (defun stem (pos-word) ; Originally Mar 21/01; present version for ULF: Apr 2020
 ;~~~~~~~~~~~~~~~~~~~~~
 ; pos-word: a list (<pos> <word> ...) where <pos> is a Treebank POS (with some

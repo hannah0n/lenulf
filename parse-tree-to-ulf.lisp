@@ -67,6 +67,8 @@
 ;; Also attach possible types/sorts to the indexed words
 ;;
 
+(in-package :lenulf)
+
 (defparameter *word-index* 0)
 
 (defun parse-tree-to-ulf (tree)

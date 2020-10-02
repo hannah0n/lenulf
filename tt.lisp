@@ -51,6 +51,9 @@
 ;
 ; Utility for using complex indices for expression accesss;
 ; `````````````````````````````````````````````````````````
+
+(in-package :lenulf)
+
 (defun indexed-element-of (expr index); May 1/20
 ;`````````````````````````````````````
 ; e.g., (indexed-element-of '(a (b c) d) 2) --> (b c)

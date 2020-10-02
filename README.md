@@ -2,6 +2,34 @@
 
 This is an SBCL-ported and ASDF packaged version of Len's preliminary tree-to-ULF parser.
 
+
+## Running the parser
+
+If you would like to use this directly, without asdf or quicklisp, similar to
+the original unpackaged system, you can use `init.lisp` and go into the
+`lenulf` package.
+```
+* (load "init")
+[loading messages....]
+* (in-package :lenulf)
+
+#<PACKAGE "LENULF">
+* (english-to-ulf "This is a sentence")
+[processing messages...]
+(THIS.D~1 (IS.AUX~2 (A.D~3 SENTENCE.N~4)))
+```
+
+I would recommend making this accessible to quicklisp (by adding a symbolic
+link to this directory in the quicklisp local projects directory--default is
+`~/quicklisp/local-projects`). Then you can do the following.
+```
+* (ql:quickload :lenulf)
+* (in-package :lenulf)
+* (english-to-ulf "This is a sentence")
+[processing messages...]
+(THIS.D~1 (IS.AUX~2 (A.D~3 SENTENCE.N~4)))
+```
+
 ## Original README
 ```
           PARSING ENGLISH INTO ULF -- PRELIMINARY VERSION

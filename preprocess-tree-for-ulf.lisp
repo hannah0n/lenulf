@@ -15,6 +15,8 @@
 ; when they contain coordinated components.
 ;
 
+(in-package :lenulf)
+
 (defun preprocess-tree-for-ulf (tree)
 ;````````````````````````````````````
 ; Apply all the rules top-down to tree, iterating at each level until

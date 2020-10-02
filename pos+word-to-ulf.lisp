@@ -1,6 +1,8 @@
 ; Second attempt, abandoning the version in "phrase-tree-to-ulf.lisp" that
 ; was an attempt to modify the word-level ELF code. Apr 19/20
 
+(in-package :lenulf)
+
 (defun pos+word-to-raw-ulf (pos+word); NB: increments *word-index*
 ;````````````````````````````````````
 ; e.g., (VBD sent) --> (past send.7.v~4); originally, I was going to have
