@@ -4,9 +4,9 @@
 (in-package :cl-user)
 
 (defpackage :lenulf
-  (:use :cl)
-  (:export english-to-ulf
-           parse-tree-to-ulf))
+  (:use :cl :cl-user)
+  (:export :english-to-ulf
+           :parse-tree-to-ulf))
 
 (in-package :lenulf)
 (setq *show-stages* t)
