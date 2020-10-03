@@ -5,7 +5,6 @@
   :name "lenulf"
   :version "0.0.1"
   :author "Lenhart K. Schubert, packaged by Gene Louis Kim"
-  :depends-on ()
   :components ((:file "package")
                (:file "english-to-ulf")
                (:file "parse")

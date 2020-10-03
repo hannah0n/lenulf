@@ -15,7 +15,7 @@
 (load "tt.lisp")
 (load "postprocess-ulf-tree.lisp")
 
-(in-package :lenulF)
+(in-package :lenulf)
 
 (defun trace-main () 
   (trace simple-tree pos+word-to-raw-ulf aux-inflection 
