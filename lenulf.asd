@@ -14,5 +14,8 @@
                (:file "preprocessing-rules")   
                (:file "stem")
                (:file "tt")
-               (:file "postprocess-ulf-tree")))
+               (:file "postprocess-ulf-tree"))
+  :around-compile (lambda (next)
+                    (proclaim '(optimize (debug 2) (safety 3) (space 1) (speed 1)))
+                    (funcall next)))
 
