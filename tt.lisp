@@ -72,6 +72,7 @@
             ((integerp index) (nth (- index 1) expr))
             (t (setq ii (format nil "(~a)" index)); prepare for reading as a list
                (setq ii (substitute #\Space #\. ii)); blanks instead of dots
+               (setq ii (remove #\| ii))
                (setq ii (read-from-string ii)); now we have a list of indices
                (setq result expr)
                (dolist (i ii)
@@ -488,6 +489,7 @@
          ((and (atom i) 
                (setq ii (format nil "(~s)" i)); prepare for reading as a list
                (setq ii (substitute #\Space #\. ii)); blanks instead of dots
+               (setq ii (remove #\| ii))
                (setq ii (read-from-string ii)); now we have a list of indices
                (not (find-if-not #'integerp ii))) t)
          (t nil))
