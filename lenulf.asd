@@ -16,6 +16,10 @@
                (:file "tt")
                (:file "postprocess-ulf-tree"))
   :around-compile (lambda (next)
-                    (proclaim '(optimize (debug 2) (safety 3) (space 1) (speed 1)))
+                    ; For debugging/development.
+                    ; NB: debug 3 caused a heap space error.
+                    ;(proclaim '(optimize (debug 2) (safety 3) (space 1) (speed 1)))
+                    ; For production.
+                    (proclaim '(optimize (debug 0) (safety 1) (space 1) (speed 3)))
                     (funcall next)))
 
