@@ -41,7 +41,7 @@
                          (return nil)) ; exit loop
                 (if (null chars) (return nil)))
           (push (coerce (reverse sent) 'string) sents)
-          (if (null chars) 
+          (if (null chars)
               (return-from sep-sentences (reverse sents))))
  )); end of sep-sentences
 
@@ -96,19 +96,37 @@
                                 ;; bracketed by <s> ... </s>)
   "Returns a string containing the result of executing the command."
   (with-output-to-string (out-stream)
-    ;(let ((stream (excl:run-shell-command command :output :stream
-    ;                                              :wait nil)))
+    #+SBCL
     (let* ((process (sb-ext:run-program
                       (exec-from-command command)
                       (args-from-command command)
                       :output :stream :wait nil :directory *default-pathname-defaults*))
            (stream (sb-ext:process-output process)))
       (loop for line = (read-line stream nil)
-         while line
-         do (write-line line out-stream))
+            while line
+            do (write-line line out-stream))
       ;; Wait for process to finish before closing stream.
       (sb-ext:process-wait process)
-      (close stream))))
+      (close stream))
+
+    #+ALLEGRO
+    (multiple-value-bind
+      (stream error-stream pid)
+      (excl:run-shell-command command :output :stream :wait nil)
+      (progn
+        (loop for line = (read-line stream nil)
+              while line
+              do
+              (write-line line out-stream))
+
+        ;; Reap parsing subprocess.  Wait if necessary.
+        ;; Shouldn't need to wait long since we've read the full
+        ;; stream from its output already, so the process should
+        ;; be close to completing.
+        (sys:reap-os-subprocess :pid pid :wait t)
+
+        ;; Close stream.
+        (close stream)))))
 
 
 ;; Note: I'd actually use 'tree-from-string' in epik/tools/lisp/utils, but
