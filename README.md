@@ -29,6 +29,36 @@ link to this directory in the quicklisp local projects directory--default is
 [processing messages...]
 (THIS.D~1 (IS.AUX~2 (A.D~3 SENTENCE.N~4)))
 ```
+The processing messages can be removed by setting the `*show-stages*` parameter
+to `nil`.
+```
+* (ql:quickload :lenulf)
+* (in-package :lenulf)
+* (setf *show-stages* nil)
+* (english-to-ulf "This is a sentence")
+
+(THIS.D~1 (IS.AUX~2 (A.D~3 SENTENCE.N~4)))
+```
+If you would rather stay in your current package, the following code results in
+the same input/output from your current package by using the global `*package*`
+variable. NB: `intern-symbols-recursive` is from a separate utility package
+[gute](https://github.com/genelkim/gute) (previously called
+[cl-util](https://github.com/genelkim/cl-util)).
+```
+* (ql:quickload :gute)
+* (ql:quickload :lenulf)
+* (gute:intern-symbols-recursive ; intern output symbols to current package
+    (let ((*package* (find-package :lenulf)) ; locally set *package* variable so symbols
+                                             ; are interned as expected in lenulf
+          (lenulf::*show-stages* nil)) ; locally turn off stage printing
+      (lenulf:english-to-ulf "This is a sentence"))
+    *package*) ; second argument of intern-symbols-recursive
+
+(THIS.D~1 (IS.AUX~2 (A.D~3 SENTENCE.N~4)))
+```
+If your current package is locked (e.g. the `common-lisp` package in SBCL) you
+may need to unlock it. This is common lisp implementation dependent. For SBCL
+`(sb-ext:unlock-package *package*)` will do it.
 
 ## Original README
 ```
