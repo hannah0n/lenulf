@@ -70,13 +70,14 @@
 ;; Berkeley Neural Parser (Nikita Kitaev & Dan Klein, 2018) is used.
   
   ; Parse str into augmented tree. Three new files are created and deleted later.
-  ; SBCL users,
+  #+SBCL
   ; you need to replace the path below with the path of the Python3 interpreter on your machine,
   ; which you can easily find by running `import sys` and `print(sys.executable)` in Python.
   (sb-ext:run-program "/Users/hannah/.pyenv/versions/3.7.4/bin/python3"
       (list "trace-parser/parse.py" str) :output *standard-output*)
-  ; Allegro CL users, change the lines above to
-  ; (excl:run-shell-command (concatenate 'string "python3 trace-parser/parse.py " str))
+  
+  #+ALLEGRO
+  (excl:run-shell-command (concatenate 'string "python3 trace-parser/parse.py " str))
 
   ; convert augmented tree to PTB graph
   (load "trace-parser/ptb2cf/parse-cf2ptb.lisp")    
