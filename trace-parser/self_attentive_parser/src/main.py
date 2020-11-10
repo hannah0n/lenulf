@@ -558,7 +558,7 @@ def run_viz(args):
                 viz_attention(sentence_words, attns)
 
 
-def main():
+def main(raw_args=None):
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
@@ -607,7 +607,7 @@ def main():
     subparser.add_argument("--viz-path", default="data/22.auto.clean")
     subparser.add_argument("--eval-batch-size", type=int, default=100)
 
-    args = parser.parse_args()
+    args = parser.parse_args(raw_args)
     args.callback(args)
 
 # %%
