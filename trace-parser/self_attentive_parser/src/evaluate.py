@@ -4,7 +4,7 @@ import re
 import subprocess
 import tempfile
 
-import trees
+from . import trees
 
 class FScore(object):
     def __init__(self, recall, precision, fscore, complete_match, tagging_accuracy=100):

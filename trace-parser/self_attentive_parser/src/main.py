@@ -8,12 +8,15 @@ import torch.optim.lr_scheduler
 
 import numpy as np
 
-import evaluate
-import trees
-import vocabulary
-import nkutil
-import parse_nk
+from . import evaluate
+from . import trees
+from . import vocabulary
+from . import nkutil
+from . import parse_nk
 tokens = parse_nk
+
+import sys
+sys.path.insert(0, './trace-parser/self_attentive_parser/src')
 
 def torch_load(load_path):
     if parse_nk.use_cuda:
