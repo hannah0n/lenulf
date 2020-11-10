@@ -9,7 +9,7 @@
 ;; Example:
 ;; (parse "This is a test.")
 
-(defparameter *parser* "/p/nl/tools/bllip-parser/first-stage/PARSE/parseIt")
+;; (defparameter *parser* "/p/nl/tools/bllip-parser/first-stage/PARSE/parseIt")
 ;                         ^^^^ changed back from krr (Jan 12); nl had been out of space
 
 ;; This is the traditional Charniak language model.
@@ -17,7 +17,7 @@
 ;;   /p/nl/tools/bllip-parser/first-stage/DATA/
 ;;      ^^ now krr, at least until nl is enlarged; but the reranking
 ;;         parser is still in nl
-(defparameter *pdata* "/p/nl/tools/reranking-parser/first-stage/DATA/EN/")
+;; (defparameter *pdata* "/p/nl/tools/reranking-parser/first-stage/DATA/EN/")
 
 (defun parse-all (str)
 ; Here we allow str to consist of multiple sentences separated by
@@ -45,21 +45,52 @@
               (return-from sep-sentences (reverse sents))))
  )); end of sep-sentences
 
+;; Original parse function for using bllip-parser
+;; (defun parse (str)
+;; ;; Here str (a string) is assumed to be a single sentence
+;; ;; We create a new file via a 'let', to be used for the stream,
+;; ;; and delete it at the end.
+;;   (let ((filename (format nil "~a.txt" (gensym)))
+;;         (result))
+;;     (with-open-file (to-parse filename :direction :output
+;;                                        :if-exists :supersede)
+;;       (format to-parse (preproc-for-parse str)))
+;;     (setf result (lispify-parser-output
+;;                   (output-from-cmd (format nil "~a ~a ~a"
+;;                                            *parser* *pdata* filename))))
+;;     (delete-file filename)
+;;     result))
 
 (defun parse (str)
 ;; Here str (a string) is assumed to be a single sentence
-;; We create a new file via a 'let', to be used for the stream,
-;; and delete it at the end.
-  (let ((filename (format nil "~a.txt" (gensym)))
-        (result))
-    (with-open-file (to-parse filename :direction :output
-                                       :if-exists :supersede)
-      (format to-parse (preproc-for-parse str)))
-    (setf result (lispify-parser-output
-                  (output-from-cmd (format nil "~a ~a ~a"
-                                           *parser* *pdata* filename))))
-    (delete-file filename)
-    result))
+;; We use a trace parser developed by Yoshihide Kato & Shigeki Matsubara (2019)
+;; It parses str into trees which approximates Penn Treebank (PTB) graphs
+;; and then converts trees into PTB graphs.
+;; To train on approximating PTB augmented trees from sentences,
+;; Berkeley Neural Parser (Nikita Kitaev & Dan Klein, 2018) is used.
+  
+  ; Parse str into augmented tree. Three new files are created and deleted later.
+  ; SBCL users,
+  ; you need to replace the path below with the path of the Python3 interpreter on your machine,
+  ; which you can easily find by running `import sys` and `print(sys.executable)` in Python.
+  (sb-ext:run-program "/Users/hannah/.pyenv/versions/3.7.4/bin/python3"
+      (list "trace-parser/parse.py" str) :output *standard-output*)
+  ; Allegro CL users, change the lines above to
+  ; (excl:run-shell-command (concatenate 'string "python3 trace-parser/parse.py " str))
+
+  ; convert augmented tree to PTB graph
+  (load "trace-parser/ptb2cf/parse-cf2ptb.lisp")    
+  (setf result (lispify-parser-output
+                  (with-open-file (stream "trace-parser/ptb.mrg")
+                    (let ((contents (make-string (file-length stream))))
+                      (read-sequence contents stream)
+                      contents))))
+
+  ; delete the files we created for parsing
+  (delete-file "trace-parser/sent.txt")
+  (delete-file "trace-parser/cf.aug")
+  (delete-file "trace-parser/ptb.mrg")
+  result)
 
 ;; prefix sentence string with <s>, postfix with </s>
 (defun preproc-for-parse (str)
